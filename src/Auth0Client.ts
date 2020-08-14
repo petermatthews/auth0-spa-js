@@ -55,11 +55,6 @@ import TokenWorker from './token.worker.ts';
 /**
  * @ignore
  */
-const lock = new Lock();
-
-/**
- * @ignore
- */
 const GET_TOKEN_SILENTLY_LOCK_KEY = 'auth0.lock.getTokenSilently';
 
 /**
@@ -581,6 +576,8 @@ export default class Auth0Client {
       ...options,
       scope: getUniqueScopes(this.defaultScope, this.scope, options.scope)
     };
+
+    const lock = new Lock();
 
     try {
       await lock.acquireLock(GET_TOKEN_SILENTLY_LOCK_KEY, 5000);
